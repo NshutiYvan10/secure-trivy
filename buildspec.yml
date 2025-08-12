@@ -5,12 +5,11 @@ phases:
     runtime-versions:
       docker: 20
     commands:
-      - echo Installing Trivy...
+      - echo "Installing Trivy..."
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-      - mv trivy /usr/local/bin/
   build:
     commands:
-      - echo Building secure Docker image...
-      - docker build -t secure-app -f Dockerfile.secure .
-      - echo Scanning image for HIGH/CRITICAL vulnerabilities...
-      - trivy image --exit-code 1 --severity HIGH,CRITICAL secure-app
+      - echo "Building Docker image..."
+      - docker build -t myapp -f Dockerfile .
+      - echo "Scanning with Trivy..."
+      - ./trivy image --exit-code 1 --severity HIGH,CRITICAL myapp
