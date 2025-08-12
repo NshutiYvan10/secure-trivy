@@ -1,13 +1,19 @@
 version: 0.2
-
 phases:
   install:
     commands:
-      - echo "Installing Trivy..."
-      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+      # Install Trivy
+      - wget https://github.com/aquasecurity/trivy/releases/download/v0.49.1/trivy_0.49.1_Linux-64bit.deb
+      - sudo dpkg -i trivy_0.49.1_Linux-64bit.deb
+  pre_build:
+    commands:
+      - echo "This is the pre-build phase"
+      # Other commands, like Docker login, would go here
   build:
     commands:
-      - echo "Building Docker image..."
-      - docker build -t myapp -f Dockerfile .
-      - echo "Scanning with Trivy..."
-      - ./trivy image --exit-code 1 --severity HIGH,CRITICAL myapp
+      - echo "This is the build phase"
+      # Build your Docker image here
+      - docker build -t myapp .
+      - echo "Running Trivy scan..."
+      # Now the Trivy command will be found
+      - trivy image --exit-code 1 --severity HIGH,CRITICAL myapp
